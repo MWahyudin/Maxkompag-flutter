@@ -1,8 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/data/data.dart';
 import 'package:kompag/widgets/custom_app_bar.dart';
+import 'dart:convert';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key key}) : super(key: key);
@@ -28,23 +30,34 @@ class _MainScreenState extends State<MainScreen> {
         physics: ClampingScrollPhysics(),
         slivers: <Widget>[
           _buildMenuGrid(screenHeight),
-          _buildTipsSection(screenHeight)
+          _buildTipsSection(screenHeight),
+          // _buildListWilayah(screenHeight),
+          _buildListWilayah(screenHeight),
+          WilayahCards(
+            screenHeight: 1,
+          ),
         ],
       ),
     );
   }
 }
 
+// SliverToBoxAdapter _buildListWilayah(double screenHeight) {
+//   return SliverToBoxAdapter(
+//     child: Container(),
+//   );
+// }
+
 SliverToBoxAdapter _buildTipsSection(double screenHeight) {
   return SliverToBoxAdapter(
     child: Container(
-      padding: const EdgeInsets.only(top: 20,left: 20, right: 20),
+      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       // color: Colors.orange,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'Tips',
+            'Statistik',
             style: const TextStyle(
               fontSize: 22.0,
               fontWeight: FontWeight.w600,
@@ -84,7 +97,7 @@ SliverToBoxAdapter _buildTipsSection(double screenHeight) {
                                     e.values.first,
                                     style: const TextStyle(
                                       fontSize: 16.0,
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.normal,
                                     ),
                                     textAlign: TextAlign.center,
                                   )
@@ -101,46 +114,132 @@ SliverToBoxAdapter _buildTipsSection(double screenHeight) {
   );
 }
 
-SliverToBoxAdapter _buildDataWilayah(double screenHeight) {
+SliverToBoxAdapter _buildListWilayah(double screenHeight) {
   return SliverToBoxAdapter(
-    child: Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Container(
-            color: Colors.red,
-            height: 100,
-            child: Row(
-              children: <Widget>[Text('Hello')],
-            ),
-          )
-        ],
-      ),
+      child: Padding(
+    padding: EdgeInsets.only(
+      left: 16,
     ),
-  );
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 13),
+          child: Text(
+            'Data Wilayah',
+            style: const TextStyle(
+              fontSize: 22.0,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        // SizedBox(height: screenHeight*0.1),
+        // WilayahCards(),
+        // WilayahCards(),
+      ],
+    ),
+  ));
 }
 
-SliverToBoxAdapter _buildFormSearch(double screenHeight) {
-  return SliverToBoxAdapter(
-    child: Padding(
-      padding: EdgeInsets.only(
-        // top:250,
-        top: 15,
-        left: 16.0,
-      ),
-      child: Row(
-        children: <Widget>[
-          Text(
-            'Data Wilayah',
-            style: TextStyle(fontSize: 25),
+class WilayahCards extends StatefulWidget {
+  final screenHeight;
+  const WilayahCards({Key key, this.screenHeight}) : super(key: key);
+
+  @override
+  _WilayahCardsState createState() => _WilayahCardsState();
+}
+
+class _WilayahCardsState extends State<WilayahCards> {
+  Map data;
+  List dataWilayah;
+  // Map wilayahs;
+  Future getWilayah() async {
+    String uri =
+        'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
+    Response response = await Dio().get(uri);
+    // print(response.data);
+    print('hiho');
+    data = response.data;
+    setState(() {
+      dataWilayah = data['data'];
+    });
+    // print(dataWilayah.toString());
+  }
+
+  @override
+  void initState() {
+    // wilayahs = getWilayah();
+    super.initState();
+    getWilayah();
+  }
+
+  // getData() async {
+  //   List data = await getWilayah();
+  //   String myData = data[0]['data'];
+  //   return myData;
+  // }
+
+  @override
+  Widget build(BuildContext context) {
+    // print(dataWilayah);
+    return SliverList(
+      delegate: SliverChildBuilderDelegate((context, index) {
+        return Container(
+          margin: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 10),
+          width: 400.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10.0),
+            ),
+            border: Border.all(color: Colors.black),
           ),
-          // SizedBox(
-          //   height: screenHeight * 0.1,
-          // ),
-        ],
-      ),
-    ),
-  );
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Text(
+                      '${dataWilayah[index]['nama']}',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+                  Wrap(
+                      runSpacing: -8.0,
+                      spacing: 8.0,
+                      children: <Widget>[
+                        DetailWilayah(Icons.person, 'Anggota ${dataWilayah[index]['jumlah_anggota']}'),
+                        DetailWilayah(Icons.verified, 'Terverifikasi ${dataWilayah[index]['jumlah_verifikasi']}'),
+                        DetailWilayah(Icons.family_restroom, 'Keluarga ${dataWilayah[index]['jumlah_keluarga']}'),
+                      ],
+                    ),
+              ],
+            ),
+          ),
+        );
+      }, childCount: dataWilayah.length),
+    );
+  }
+}
+
+class DetailWilayah extends StatelessWidget {
+  final IconData iconData;
+  final String label;
+
+  const DetailWilayah(this.iconData, this.label);
+
+  @override
+  Widget build(BuildContext context) {
+    return RawChip(
+      label: Text(label),
+      labelStyle: TextStyle(color: Colors.black, fontSize: 16),
+      backgroundColor: Colors.white,
+      avatar: Icon(iconData),
+    );
+  }
 }
 
 SliverToBoxAdapter _buildMenuGrid(double screenHeight) {
@@ -189,21 +288,4 @@ _gridItemMenu(icon) {
       Text('data menu')
     ],
   );
-}
-
-class WilayahCard extends StatefulWidget {
-  WilayahCard({Key key}) : super(key: key);
-
-  @override
-  _WilayahCardState createState() => _WilayahCardState();
-}
-
-class _WilayahCardState extends State<WilayahCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey,
-      height: 100.0,
-    );
-  }
 }

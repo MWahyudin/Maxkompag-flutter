@@ -26,6 +26,7 @@ dependencies:
   awesome_button: ^1.0.2
   colour: ^1.0.4
   cupertino_icons: ^1.0.0
+  dio: ^3.0.10
   introduction_screen: ^1.0.9
   page_transition: ^1.1.7+2
   slider: ^0.0.1
