@@ -14,10 +14,45 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  Map data;
+  List dataWilayah = [
+    {'1': '2'},
+  ];
+  // Future<List> dataWilayah;
+  // Future<List> dataWilayah;
+  // final Future<List<Item>> dataWilayah;
+
+  // Map wilayahs;
+  // Future<List> getWilayah() async {
+  //   String uri =
+  //       'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
+  //   Response response = await Dio().get(uri);
+  //   // print(response.data);
+  //   // print('hiho');
+  //   data = response.data;
+
+  //   return data['data'];
+  // }
+  Future getWilayah() async {
+    String uri =
+        'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
+    Response response = await Dio().get(uri);
+    // print(response.data);
+    print('hiho');
+    data = response.data;
+    setState(() {
+      dataWilayah = data['data'];
+    });
+    // print(dataWilayah.toString());
+  }
+
   @override
   void initState() {
     super.initState();
-
+    getWilayah();
+    // getWilayah();
+    // dataWilayah = getWilayah();
+    // print(dataWilayah);
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
@@ -31,22 +66,91 @@ class _MainScreenState extends State<MainScreen> {
         slivers: <Widget>[
           _buildMenuGrid(screenHeight),
           _buildTipsSection(screenHeight),
-          // _buildListWilayah(screenHeight),
           _buildListWilayah(screenHeight),
-          WilayahCards(
-            screenHeight: 1,
-          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
+              return Container(
+                margin:
+                    EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 10),
+                width: 400.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                  border: Border.all(color: Colors.black),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          dataWilayah[index]['nama'] != null
+                              ? Text(
+                                  '${dataWilayah[index]['nama']}',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600),
+                                )
+                              : Text(''),
+                        ],
+                      ),
+                      dataWilayah[index]['nama'] != null
+                          ? Wrap(
+                              runSpacing: -8.0,
+                              spacing: 8.0,
+                              children: <Widget>[
+                                DetailWilayah(Icons.person,
+                                    'Anggota ${dataWilayah[index]['jumlah_anggota']}'),
+                                DetailWilayah(Icons.verified,
+                                    'Terverifikasi ${dataWilayah[index]['jumlah_verifikasi']}'),
+                                DetailWilayah(Icons.family_restroom,
+                                    'Keluarga ${dataWilayah[index]['jumlah_keluarga']}'),
+                              ],
+                            )
+                          : Text("Loading..."),
+                    ],
+                  ),
+                ),
+              );
+            }, childCount: dataWilayah.length),
+          )
+
+          // SliverList(
+          //   delegate: SliverChildListDelegate(
+          // [
+          //   Container(
+          //     child: FutureBuilder<List>(
+          //       future: dataWilayah,
+          //       builder:
+          //           (BuildContext context, AsyncSnapshot<List> snapshot) {
+          //         if (snapshot.hasData) {
+          //           print(snapshot.data);
+          //           return ListView.builder(
+          //             itemBuilder: (BuildContext context, int index) {
+          //               return Expanded(
+          //                   child: Column(
+          //                 children: [
+          //                   Text('hello')
+          //                 ],
+          //               ));
+          //             },
+          //           );
+          //         }
+          //         return Text('ga ada');
+          //       },
+          //     ),
+          //   )
+          // ],
+          //   ),
+          // )
+          // _buildListWilayahDio(screenHeight)
         ],
       ),
     );
   }
 }
-
-// SliverToBoxAdapter _buildListWilayah(double screenHeight) {
-//   return SliverToBoxAdapter(
-//     child: Container(),
-//   );
-// }
 
 SliverToBoxAdapter _buildTipsSection(double screenHeight) {
   return SliverToBoxAdapter(
@@ -133,96 +237,9 @@ SliverToBoxAdapter _buildListWilayah(double screenHeight) {
             ),
           ),
         ),
-        // SizedBox(height: screenHeight*0.1),
-        // WilayahCards(),
-        // WilayahCards(),
       ],
     ),
   ));
-}
-
-class WilayahCards extends StatefulWidget {
-  final screenHeight;
-  const WilayahCards({Key key, this.screenHeight}) : super(key: key);
-
-  @override
-  _WilayahCardsState createState() => _WilayahCardsState();
-}
-
-class _WilayahCardsState extends State<WilayahCards> {
-  Map data;
-  List dataWilayah;
-  // Map wilayahs;
-  Future getWilayah() async {
-    String uri =
-        'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
-    Response response = await Dio().get(uri);
-    // print(response.data);
-    print('hiho');
-    data = response.data;
-    setState(() {
-      dataWilayah = data['data'];
-    });
-    // print(dataWilayah.toString());
-  }
-
-  @override
-  void initState() {
-    // wilayahs = getWilayah();
-    super.initState();
-    getWilayah();
-  }
-
-  // getData() async {
-  //   List data = await getWilayah();
-  //   String myData = data[0]['data'];
-  //   return myData;
-  // }
-
-  @override
-  Widget build(BuildContext context) {
-    // print(dataWilayah);
-    return SliverList(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        return Container(
-          margin: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 10),
-          width: 400.0,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
-            border: Border.all(color: Colors.black),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Text(
-                      '${dataWilayah[index]['nama']}',
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                  Wrap(
-                      runSpacing: -8.0,
-                      spacing: 8.0,
-                      children: <Widget>[
-                        DetailWilayah(Icons.person, 'Anggota ${dataWilayah[index]['jumlah_anggota']}'),
-                        DetailWilayah(Icons.verified, 'Terverifikasi ${dataWilayah[index]['jumlah_verifikasi']}'),
-                        DetailWilayah(Icons.family_restroom, 'Keluarga ${dataWilayah[index]['jumlah_keluarga']}'),
-                      ],
-                    ),
-              ],
-            ),
-          ),
-        );
-      }, childCount: dataWilayah.length),
-    );
-  }
 }
 
 class DetailWilayah extends StatelessWidget {
