@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/data/data.dart';
+import 'package:kompag/screens/dashboard/member/main.dart';
 import 'package:kompag/widgets/custom_app_bar.dart';
 import 'dart:convert';
+
+import 'package:page_transition/page_transition.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key key}) : super(key: key);
@@ -18,21 +21,6 @@ class _MainScreenState extends State<MainScreen> {
   List dataWilayah = [
     {'1': '2'},
   ];
-  // Future<List> dataWilayah;
-  // Future<List> dataWilayah;
-  // final Future<List<Item>> dataWilayah;
-
-  // Map wilayahs;
-  // Future<List> getWilayah() async {
-  //   String uri =
-  //       'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
-  //   Response response = await Dio().get(uri);
-  //   // print(response.data);
-  //   // print('hiho');
-  //   data = response.data;
-
-  //   return data['data'];
-  // }
   Future getWilayah() async {
     String uri =
         'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
@@ -62,9 +50,10 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: CustomAppBar(),
       body: CustomScrollView(
-        physics: ClampingScrollPhysics(),
+        //  physics: new NeverScrollableScrollPhysics(),
+        physics: new ClampingScrollPhysics(),
         slivers: <Widget>[
-          _buildMenuGrid(screenHeight),
+          _buildMenuGrid(screenHeight, context),
           _buildTipsSection(screenHeight),
           _buildListWilayah(screenHeight),
           SliverList(
@@ -259,50 +248,94 @@ class DetailWilayah extends StatelessWidget {
   }
 }
 
-SliverToBoxAdapter _buildMenuGrid(double screenHeight) {
+SliverToBoxAdapter _buildMenuGrid(double screenHeight, context) {
   return SliverToBoxAdapter(
     child: Container(
       height: 195,
-      child: IgnorePointer(
-        child: GridView(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-          ),
-          children: <Widget>[
-            _gridItemMenu(Icons.person),
-            _gridItemMenu(Icons.ac_unit),
-            _gridItemMenu(Icons.list),
-            _gridItemMenu(Icons.bar_chart),
-            _gridItemMenu(Icons.mail),
-            _gridItemMenu(Icons.phone),
-            _gridItemMenu(Icons.pages),
-            // _gridItemMenu(Icons.tap_and_play_rounded),
-            // _gridItemMenu(Icons.airport_shuttle),
-            _gridItemMenu(Icons.airplanemode_on),
-          ],
+      // width: 200,
+      child: GridView(
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
         ),
+        children: <Widget>[
+          _gridItemMenu(
+            Icons.person,
+            'member',
+            context,
+            menu: 'Members',
+          ),
+          _gridItemMenu(
+            Icons.ac_unit,
+            '2',
+            context,
+          ),
+          _gridItemMenu(
+            Icons.list,
+            '2',
+            context,
+          ),
+          _gridItemMenu(
+            Icons.bar_chart,
+            '2',
+            context,
+          ),
+          _gridItemMenu(
+            Icons.mail,
+            '2',
+            context,
+          ),
+          _gridItemMenu(
+            Icons.phone,
+            '2',
+            context,
+          ),
+          _gridItemMenu(
+            Icons.pages,
+            '2',
+            context,
+          ),
+          _gridItemMenu(
+            Icons.airplanemode_on,
+            '2',
+            context,
+          ),
+        ],
       ),
     ),
   );
 }
 
-_gridItemMenu(icon) {
+_gridItemMenu(icon, link, context, {menu = 'default'}) {
   return Column(
     children: <Widget>[
-      CircleAvatar(
-        // minRadius: 20.0,
-        maxRadius: 30.0,
-        child: Icon(
-          icon,
-          size: 30.0,
-          color: Colors.white,
+      InkWell(
+        onTap: () {
+          link == 'member'
+              ? Navigator.push(
+                  context,
+                  PageTransition(
+                      duration: Duration(milliseconds: 300),
+                      type: PageTransitionType.leftToRightWithFade,
+                      child: MemberScreen()))
+              : print('hello');
+        },
+        child: CircleAvatar(
+          minRadius: 20.0,
+          maxRadius: 30.0,
+          child: Icon(
+            icon,
+            size: 42.0,
+            color: Colors.white,
+          ),
+          backgroundColor: Palette.secondaryColor,
         ),
-        backgroundColor: Palette.secondaryColor,
       ),
       SizedBox(
         height: 10.0,
       ),
-      Text('data menu')
+      Text(menu)
+      // menu != 2 ? Text('hi') : Text('belum diatur')
     ],
   );
 }
