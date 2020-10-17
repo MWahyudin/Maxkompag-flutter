@@ -3,6 +3,7 @@ import 'package:kompag/components/rounded_input_field.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/screens/auth/login_screen.dart';
 import 'package:kompag/screens/dashboard/member/main.dart';
+import 'package:kompag/screens/dashboard/member/search_member_screen.dart';
 import 'package:kompag/screens/dashboard/wilayah/wilayah_list_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -129,13 +130,13 @@ class _CustomAppMainState extends State<CustomAppMain> {
                             ),
                             child: InkWell(
                               onTap: () {
-                                print('hi');
+                                // print('hi');
                                 Navigator.push(
                                     context,
                                     PageTransition(
                                         duration: Duration(milliseconds: 500),
                                         type: PageTransitionType.fade,
-                                        child: WilayahListScreen()));
+                                        child: SearchMemberScreen(idMember: idMember,)));
                               },
                               child: Icon(
                                 Icons.person_search_rounded,

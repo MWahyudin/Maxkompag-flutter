@@ -19,14 +19,14 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   Map data;
   List dataWilayah = [
-    {'1': '2'},
+    {'1': '2'}
   ];
   Future getWilayah() async {
     String uri =
-        'http://apikompag.maxproitsolution.com/api/statistik/WilayahResource';
+        'http://apikompag.maxproitsolution.com/api/statistik/wilayah';
     Response response = await Dio().get(uri);
     // print(response.data);
-    print('hiho');
+    // print('hiho');
     data = response.data;
     setState(() {
       dataWilayah = data['data'];
