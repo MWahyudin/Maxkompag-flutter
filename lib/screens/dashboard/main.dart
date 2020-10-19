@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/data/data.dart';
 import 'package:kompag/screens/dashboard/member/main.dart';
+import 'package:kompag/screens/dashboard/sektor/main.dart';
+import 'package:kompag/screens/dashboard/wilayah/wilayah_list_screen.dart';
 import 'package:kompag/widgets/custom_app_bar.dart';
 import 'dart:convert';
 
@@ -22,8 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     {'1': '2'}
   ];
   Future getWilayah() async {
-    String uri =
-        'http://apikompag.maxproitsolution.com/api/statistik/wilayah';
+    String uri = 'http://apikompag.maxproitsolution.com/api/statistik/wilayah';
     Response response = await Dio().get(uri);
     // print(response.data);
     // print('hiho');
@@ -54,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
         physics: new ClampingScrollPhysics(),
         slivers: <Widget>[
           _buildMenuGrid(screenHeight, context),
-          _buildTipsSection(screenHeight),
+          _buildTipsSection(screenHeight, context),
           _buildListWilayah(screenHeight),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
@@ -141,7 +142,7 @@ class _MainScreenState extends State<MainScreen> {
   }
 }
 
-SliverToBoxAdapter _buildTipsSection(double screenHeight) {
+SliverToBoxAdapter _buildTipsSection(double screenHeight, context) {
   return SliverToBoxAdapter(
     child: Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -175,7 +176,14 @@ SliverToBoxAdapter _buildTipsSection(double screenHeight) {
                             padding: EdgeInsets.only(right: 15),
                             child: InkWell(
                               onTap: () {
-                                print(e['link']);
+                               if (e['link'] == 'WilayahScreen()') {
+                                Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: WilayahListScreen()));
+                                 
+                               } else if(e['link'] == 'SektorScreen()') {
+                                Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: SektorScreen()));
+
+                               }else{}
+                                // Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: WilayahListScreen()));
                               },
                               child: Column(
                                 children: <Widget>[
