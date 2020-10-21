@@ -4,7 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/data/data.dart';
 import 'package:kompag/screens/dashboard/member/main.dart';
-import 'package:kompag/screens/dashboard/sektor/main.dart';
+import 'package:kompag/screens/dashboard/statistik/generasi_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/marga_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/sektor_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/wilayah_statistik.dart';
 import 'package:kompag/screens/dashboard/wilayah/wilayah_list_screen.dart';
 import 'package:kompag/widgets/custom_app_bar.dart';
 import 'dart:convert';
@@ -19,7 +22,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  Map data;
+  List data;
   List dataWilayah = [
     {'1': '2'}
   ];
@@ -30,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
     // print('hiho');
     data = response.data;
     setState(() {
-      dataWilayah = data['data'];
+      dataWilayah = data;
     });
     // print(dataWilayah.toString());
   }
@@ -48,13 +51,15 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: CustomAppBar(),
       body: CustomScrollView(
         //  physics: new NeverScrollableScrollPhysics(),
         physics: new ClampingScrollPhysics(),
         slivers: <Widget>[
-          _buildMenuGrid(screenHeight, context),
+          _buildMenuGrid(screenHeight, screenWidth, context),
           _buildTipsSection(screenHeight, context),
           _buildListWilayah(screenHeight),
           SliverList(
@@ -76,9 +81,9 @@ class _MainScreenState extends State<MainScreen> {
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          dataWilayah[index]['nama'] != null
+                          dataWilayah != null
                               ? Text(
-                                  '${dataWilayah[index]['nama']}',
+                                  '${dataWilayah[index]['Nama']}',
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600),
@@ -86,17 +91,17 @@ class _MainScreenState extends State<MainScreen> {
                               : Text(''),
                         ],
                       ),
-                      dataWilayah[index]['nama'] != null
+                      dataWilayah != null
                           ? Wrap(
                               runSpacing: -8.0,
                               spacing: 8.0,
                               children: <Widget>[
                                 DetailWilayah(Icons.person,
-                                    'Anggota ${dataWilayah[index]['jumlah_anggota']}'),
+                                    'Anggota ${dataWilayah[index]['Jumlah_Anggota']}'),
                                 DetailWilayah(Icons.verified,
-                                    'Terverifikasi ${dataWilayah[index]['jumlah_verifikasi']}'),
+                                    'Terverifikasi ${dataWilayah[index]['Jumlah_Verifikasi']}'),
                                 DetailWilayah(Icons.family_restroom,
-                                    'Keluarga ${dataWilayah[index]['jumlah_keluarga']}'),
+                                    'Keluarga ${dataWilayah[index]['Jumlah_Keluarga']}'),
                               ],
                             )
                           : Text("Loading..."),
@@ -145,7 +150,7 @@ class _MainScreenState extends State<MainScreen> {
 SliverToBoxAdapter _buildTipsSection(double screenHeight, context) {
   return SliverToBoxAdapter(
     child: Container(
-      padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+      padding: const EdgeInsets.only(left: 20, right: 20),
       // color: Colors.orange,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,13 +181,42 @@ SliverToBoxAdapter _buildTipsSection(double screenHeight, context) {
                             padding: EdgeInsets.only(right: 15),
                             child: InkWell(
                               onTap: () {
-                               if (e['link'] == 'WilayahScreen()') {
-                                Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: WilayahListScreen()));
-                                 
-                               } else if(e['link'] == 'SektorScreen()') {
-                                Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: SektorScreen()));
-
-                               }else{}
+                                if (e['link'] == 'WilayahScreen()') {
+                                  Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      duration: Duration(milliseconds: 200),
+                                      type: PageTransitionType
+                                          .rightToLeftWithFade,
+                                      child: WilayahStatistikScreen(),
+                                    ),
+                                  );
+                                } else if (e['link'] == 'SektorScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: SektorStatistikScreen()));
+                                } else if (e['link'] == 'GenerasiScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: GenerasiStatistikScreen()));
+                                }else if (e['link'] == 'MargaScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: MargaStatistikScreen()));
+                                }
+                                 else {}
                                 // Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: WilayahListScreen()));
                               },
                               child: Column(
@@ -256,16 +290,22 @@ class DetailWilayah extends StatelessWidget {
   }
 }
 
-SliverToBoxAdapter _buildMenuGrid(double screenHeight, context) {
+SliverToBoxAdapter _buildMenuGrid(
+    double screenHeight, double screenWidth, context) {
   return SliverToBoxAdapter(
     child: Container(
-      height: 195,
-      // width: 200,
-      child: GridView(
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      height: screenHeight * 0.3,
+      // width: screenWidth * 2,
+      padding: EdgeInsets.only(right: 30, left: 30),
+      child: GridView.count(
+        childAspectRatio: MediaQuery.of(context).size.height / 840,
           crossAxisCount: 4,
-        ),
+
+        physics: NeverScrollableScrollPhysics(),
+        // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //  childAspectRatio: _aspectRatio,
+          // childAspectRatio: 1,
+        // ),
         children: <Widget>[
           _gridItemMenu(
             Icons.person,
@@ -330,10 +370,10 @@ _gridItemMenu(icon, link, context, {menu = 'default'}) {
         },
         child: CircleAvatar(
           minRadius: 20.0,
-          maxRadius: 30.0,
+          maxRadius: 35.0,
           child: Icon(
             icon,
-            size: 42.0,
+            size: 40.0,
             color: Colors.white,
           ),
           backgroundColor: Palette.secondaryColor,

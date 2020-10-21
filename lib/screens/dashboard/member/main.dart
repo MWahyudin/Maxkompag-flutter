@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/widgets/custom_app.dart';
+import 'package:sizer/sizer.dart';
 
 class MemberScreen extends StatefulWidget {
   MemberScreen({Key key}) : super(key: key);
@@ -15,9 +16,15 @@ class MemberScreen extends StatefulWidget {
 class _MemberScreenState extends State<MemberScreen> {
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
+    //  SizerUtil().init(constraints, orientation);
+    // final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return LayoutBuilder(builder: (context, constraints) {
+      return OrientationBuilder(
+        builder: (context, orientation) {
+            //initialize SizerUtil()
+            SizerUtil().init(constraints, orientation);  //initialize SizerUtil
+            return Scaffold(
       appBar: CustomAppMain(
         // title: "Maxpro Kompag",
       ),
@@ -93,6 +100,85 @@ class _MemberScreenState extends State<MemberScreen> {
       //   ],
       // ),
     );
+          },
+      );
+    });
+    // return Scaffold(
+    //   appBar: CustomAppMain(
+    //     // title: "Maxpro Kompag",
+    //   ),
+    //   body: SingleChildScrollView(
+    //           child: Column(
+    //       children: <Widget>[
+    //         new HeaderMember(),
+    //         new ListMember(),
+    //       ],
+    //     ),
+    //   ),
+    //   floatingActionButton: FabCircularMenu(
+    //     fabOpenColor: Colors.white,
+    //     fabColor: Palette.secondaryColor,
+    //     ringWidth: screenWidth * 0.2,
+    //     ringColor: Palette.secondaryColor,
+    //     ringDiameter: screenWidth * 0.7,
+    //     fabSize: 70.0,
+    //     fabOpenIcon: Icon(Icons.menu, color: Colors.white),
+    //     children: <Widget>[
+    //       IconButton(
+    //         icon: Icon(
+    //           Icons.home,
+    //           color: Colors.white,
+    //         ),
+    //         onPressed: () {
+    //           print('Home');
+    //         },
+    //       ),
+    //       IconButton(
+    //         icon: Icon(
+    //           Icons.star_outline,
+    //           color: Colors.white,
+    //         ),
+    //         onPressed: () {
+    //           print('Home');
+    //         },
+    //       ),
+    //       IconButton(
+    //         icon: Icon(
+    //           Icons.place,
+    //           color: Colors.white,
+    //         ),
+    //         onPressed: () {
+    //           print('Home');
+    //         },
+    //       ),
+    //       IconButton(
+    //         icon: Icon(
+    //           Icons.local_activity,
+    //           color: Colors.white,
+    //         ),
+    //         onPressed: () {
+    //           print('Home');
+    //         },
+    //       ),
+    //       IconButton(
+    //         icon: Icon(
+    //           Icons.favorite,
+    //           color: Colors.white,
+    //         ),
+    //         onPressed: () {
+    //           print('Favorite');
+    //         },
+    //       )
+    //     ],
+    //   ),
+
+    //   // Column(
+    //   //   children: <Widget>[
+    //   //     new HeaderMember(),
+    //   //     new ListMember(),
+    //   //   ],
+    //   // ),
+    // );
   }
 }
 
@@ -110,8 +196,8 @@ class _HeaderMemberState extends State<HeaderMember> {
     final screenHeight = MediaQuery.of(context).size.height;
     return Container(
       margin: const EdgeInsets.symmetric(
-        vertical: 10.0,
-        horizontal: 20.0,
+        vertical: 5.0,
+        horizontal: 10.0,
       ),
       padding: EdgeInsets.all(10.0),
       // color: Colors.blue,
@@ -124,12 +210,10 @@ class _HeaderMemberState extends State<HeaderMember> {
       ),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          SvgPicture.asset(
-            'assets/images/undraw_team.svg',
-            width: 150.0,
-          ),
+          SvgPicture.asset('assets/images/undraw_team.svg',
+              width: MediaQuery.of(context).size.width * 0.4),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,7 +222,7 @@ class _HeaderMemberState extends State<HeaderMember> {
                 'Kini hanya lewat Gadget',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16.0,
+                    fontSize: 12.0.sp,
                     fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -148,7 +232,7 @@ class _HeaderMemberState extends State<HeaderMember> {
                 'Semua saling terhubung',
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14.0,
+                  fontSize: 10.0.sp,
                 ),
                 maxLines: 2,
                 // textAlign: TextAlign.center,

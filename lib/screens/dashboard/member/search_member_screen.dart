@@ -64,7 +64,7 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
         // margin: EdgeInsets.only(top: 14, left: 18),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.start,
-          // crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Container(
               margin: EdgeInsets.only(top: 14, left: 14, right: 14),
@@ -82,7 +82,7 @@ class _SearchMemberScreenState extends State<SearchMemberScreen> {
             ),
             Container(
               // height: screenHeight * 0.7,
-              padding: EdgeInsets.only(top: 12, right: 140),
+              padding: EdgeInsets.only(top: 12, left: 22),
               child: FutureBuilder<Map>(
                 future: member,
                 builder: (BuildContext context, AsyncSnapshot<Map> snapshot) {
