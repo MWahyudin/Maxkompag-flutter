@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:kompag/models/generasi_model.dart';
 import 'package:kompag/models/marga_model.dart';
 import 'package:kompag/models/sektor_model.dart';
 import 'dart:convert';
@@ -65,4 +66,24 @@ class Services {
       throw Exception('Failed to load data');
     }
   }
+
+static Future<List<Generasi>> getGenerasi() async {
+    final response = await http
+        .get('http://apikompag.maxproitsolution.com/api/statistik/generasi');
+
+    if (response.statusCode == 200) {
+      final _data =
+          json.decode(response.body)['data'].cast<Map<String, dynamic>>();
+      List<Generasi> _list =
+          _data.map<Generasi>((json) => Generasi.fromJson(json)).toList();
+      // _list = _list.getRange(0, 8).toList();
+
+      _list = _list.reversed.toList();
+      return _list.reversed.toList();
+
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
 }
