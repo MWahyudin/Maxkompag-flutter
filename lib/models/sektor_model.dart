@@ -9,39 +9,40 @@ import 'dart:convert';
 // String sektorToJson(List<Sektor> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Sektor {
-    Sektor({
-        this.id,
-        this.nama,
-        this.namaWilayah,
-        this.jumlahAnggota,
-        this.jumlahVerifikasi,
-        this.jumlahKeluarga,
-    });
+  Sektor({
+    this.id,
+    this.nama,
+    this.namaWilayah,
+    this.jumlahAnggota,
+    this.jumlahVerifikasi,
+    this.jumlahKeluarga,
+  });
 
-    int id;
-    String nama;
-    String namaWilayah;
-    int jumlahAnggota;
-    int jumlahVerifikasi;
-    int jumlahKeluarga;
+  int id;
+  String nama;
+  String namaWilayah;
+  int jumlahAnggota;
+  int jumlahVerifikasi;
+  int jumlahKeluarga;
 
-    factory Sektor.fromJson(Map<String, dynamic> json) => Sektor(
-        id: json["Id"],
-        nama: json["Nama"],
-        namaWilayah: json["Nama_Wilayah"],
-        jumlahAnggota: json["Jumlah_Anggota"],
-        jumlahVerifikasi: json["Jumlah_Verifikasi"],
-        jumlahKeluarga: json["Jumlah_Keluarga"],
+  factory Sektor.fromJson(Map<String, dynamic> json) {
+    return Sektor(
+      id: json["id"],
+      nama: json["nama"],
+      namaWilayah: json["nama_wilayah"],
+      jumlahAnggota: json["jumlah_anggota"],
+      jumlahVerifikasi: json["jumlah_verifikasi"],
+      jumlahKeluarga: json["jumlah_keluarga"],
     );
-
-    // Map<String, dynamic> toJson() => {
-    //     "Id": id,
-    //     "Nama": nama,
-    //     "Nama_Wilayah": namaWilayah,
-    //     "Jumlah_Anggota": jumlahAnggota,
-    //     "Jumlah_Verifikasi": jumlahVerifikasi,
-    //     "Jumlah_Keluarga": jumlahKeluarga,
-    // };
+  }
+  // Map<String, dynamic> toJson() => {
+  //     "Id": id,
+  //     "Nama": nama,
+  //     "Nama_Wilayah": namaWilayah,
+  //     "Jumlah_Anggota": jumlahAnggota,
+  //     "Jumlah_Verifikasi": jumlahVerifikasi,
+  //     "Jumlah_Keluarga": jumlahKeluarga,
+  // };
 }
 
 // enum NamaWilayah { BELUM_DILENGKAPI, BEKASI, DEPOK, CIBINONG, JAKARTA_TIMUR_1, JAKARTA_PUSAT }

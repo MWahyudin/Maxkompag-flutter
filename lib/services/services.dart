@@ -6,12 +6,14 @@ import 'dart:convert';
 import 'package:kompag/models/wilayah_model.dart';
 
 class Services {
-  static const url = 'http://apikompag.maxproitsolution.com/api/statistik/';
+  // static const url = 'http://apikompag.maxproitsolution.com/api/statistik/';
 
   static Future<List<Sektor>> getSektor() async {
-    String path = 'sektor';
-    final response = await http.get(url + path);
+    // String path = 'sektor';
+    final response = await http
+        .get('http://apikompag.maxproitsolution.com/api/statistik/sektor');
 
+    // print(response.body);
     if (response.statusCode == 200) {
       final _data =
           json.decode(response.body)['data'].cast<Map<String, dynamic>>();
@@ -27,9 +29,10 @@ class Services {
   }
 
   static Future<List<Wilayah>> getWilayah() async {
-    String path = 'wilayah';
+    // String path = 'wilayah';
     try {
-      final response = await http.get(url + path);
+      final response = await http
+          .get('http://apikompag.maxproitsolution.com/api/statistik/wilayah');
       print(response.body);
       if (200 == response.statusCode) {
         final List<Wilayah> wilayah = wilayahFromJson(response.body);

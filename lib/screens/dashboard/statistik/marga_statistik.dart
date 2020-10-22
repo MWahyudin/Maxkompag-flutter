@@ -10,31 +10,6 @@ class MargaStatistikScreen extends StatefulWidget {
 }
 
 class _MargaStatistikScreenState extends State<MargaStatistikScreen> {
-  Future<List<Marga>> _marga;
-  // List<Marga> margadata;
-
-  @override
-  void initState() {
-    super.initState();
-    refresh();
-  }
-
-  refresh() {
-    //  Services.getWilayah().then((wilayahs) {
-    //   setState(() {
-    //     _isLoading = false;
-
-    //     _wilayahs = wilayahs;
-    //     _dataTest = wilayahs.map((e) => e);
-    //   });
-    // });
-    //  Services.getMarga().then((margas) {
-    //    setState(() {
-    //      _marga = margas;
-    //    });
-    //  });
-    _marga = Services.getMarga();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -115,19 +90,6 @@ class _MainState extends State<Main> {
   }
 
   refresh() {
-    //  Services.getWilayah().then((wilayahs) {
-    //   setState(() {
-    //     _isLoading = false;
-
-    //     _wilayahs = wilayahs;
-    //     _dataTest = wilayahs.map((e) => e);
-    //   });
-    // });
-    //  Services.getMarga().then((margas) {
-    //    setState(() {
-    //      _marga = margas;
-    //    });
-    //  });
     _marga = Services.getMarga();
   }
 
