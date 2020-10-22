@@ -4,9 +4,9 @@
 
 import 'dart:convert';
 
-List<Sektor> sektorFromJson(String str) => List<Sektor>.from(json.decode(str).map((x) => Sektor.fromJson(x)));
+// List<Sektor> sektorFromJson(String str) => List<Sektor>.from(json.decode(str).map((x) => Sektor.fromJson(x)));
 
-String sektorToJson(List<Sektor> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+// String sektorToJson(List<Sektor> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Sektor {
     Sektor({
@@ -34,14 +34,14 @@ class Sektor {
         jumlahKeluarga: json["Jumlah_Keluarga"],
     );
 
-    Map<String, dynamic> toJson() => {
-        "Id": id,
-        "Nama": nama,
-        "Nama_Wilayah": namaWilayah,
-        "Jumlah_Anggota": jumlahAnggota,
-        "Jumlah_Verifikasi": jumlahVerifikasi,
-        "Jumlah_Keluarga": jumlahKeluarga,
-    };
+    // Map<String, dynamic> toJson() => {
+    //     "Id": id,
+    //     "Nama": nama,
+    //     "Nama_Wilayah": namaWilayah,
+    //     "Jumlah_Anggota": jumlahAnggota,
+    //     "Jumlah_Verifikasi": jumlahVerifikasi,
+    //     "Jumlah_Keluarga": jumlahKeluarga,
+    // };
 }
 
 // enum NamaWilayah { BELUM_DILENGKAPI, BEKASI, DEPOK, CIBINONG, JAKARTA_TIMUR_1, JAKARTA_PUSAT }

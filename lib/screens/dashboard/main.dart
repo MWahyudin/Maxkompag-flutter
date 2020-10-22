@@ -4,9 +4,17 @@ import 'package:flutter/services.dart';
 import 'package:kompag/config/palette.dart';
 import 'package:kompag/data/data.dart';
 import 'package:kompag/screens/dashboard/member/main.dart';
+import 'package:kompag/screens/dashboard/statistik/gelar_statistik.dart';
 import 'package:kompag/screens/dashboard/statistik/generasi_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/keahlian_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/konsentrasi_statistik.dart';
 import 'package:kompag/screens/dashboard/statistik/marga_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/parompuon_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/pekerjaan_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/pendidikan_statistik.dart';
 import 'package:kompag/screens/dashboard/statistik/sektor_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/source_statistik.dart';
+import 'package:kompag/screens/dashboard/statistik/title_statistik.dart';
 import 'package:kompag/screens/dashboard/statistik/wilayah_statistik.dart';
 import 'package:kompag/screens/dashboard/wilayah/wilayah_list_screen.dart';
 import 'package:kompag/widgets/custom_app_bar.dart';
@@ -199,6 +207,14 @@ SliverToBoxAdapter _buildTipsSection(double screenHeight, context) {
                                           type: PageTransitionType
                                               .rightToLeftWithFade,
                                           child: SektorStatistikScreen()));
+                                } else if (e['link'] == 'MargaScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: MargaStatistikScreen()));
                                 } else if (e['link'] == 'GenerasiScreen()') {
                                   Navigator.push(
                                       context,
@@ -207,16 +223,71 @@ SliverToBoxAdapter _buildTipsSection(double screenHeight, context) {
                                           type: PageTransitionType
                                               .rightToLeftWithFade,
                                           child: GenerasiStatistikScreen()));
-                                }else if (e['link'] == 'MargaScreen()') {
+                                } else if (e['link'] == 'ParompuonScreen()') {
                                   Navigator.push(
                                       context,
                                       PageTransition(
                                           duration: Duration(milliseconds: 200),
                                           type: PageTransitionType
                                               .rightToLeftWithFade,
-                                          child: MargaStatistikScreen()));
-                                }
-                                 else {}
+                                          child: ParompuonStatistikScreen()));
+                                } else if (e['link'] == 'GelarScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: GelarStatistikScreen()));
+                                } else if (e['link'] == 'TitleScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: TitleStatistikScreen()));
+                                } else if (e['link'] == 'KeahlianScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: KeahlianStatistikScreen()));
+                                } else if (e['link'] == 'KonsentrasiScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: KonsentrasiStatistikScreen()));
+                                } else if (e['link'] == 'PekerjaanScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: PekerjaanStatistikScreen()));
+                                } else if (e['link'] == 'PendidikanScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: PendidikanStatistikScreen()));
+                                } else if (e['link'] == 'SourceScreen()') {
+                                  Navigator.push(
+                                      context,
+                                      PageTransition(
+                                          duration: Duration(milliseconds: 200),
+                                          type: PageTransitionType
+                                              .rightToLeftWithFade,
+                                          child: SourceStatistikScreen()));
+                                } else {}
                                 // Navigator.push(context,PageTransition(duration: Duration(milliseconds: 200),type: PageTransitionType.rightToLeftWithFade,child: WilayahListScreen()));
                               },
                               child: Column(
@@ -299,12 +370,12 @@ SliverToBoxAdapter _buildMenuGrid(
       padding: EdgeInsets.only(right: 30, left: 30),
       child: GridView.count(
         childAspectRatio: MediaQuery.of(context).size.height / 840,
-          crossAxisCount: 4,
+        crossAxisCount: 4,
 
         physics: NeverScrollableScrollPhysics(),
         // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //  childAspectRatio: _aspectRatio,
-          // childAspectRatio: 1,
+        //  childAspectRatio: _aspectRatio,
+        // childAspectRatio: 1,
         // ),
         children: <Widget>[
           _gridItemMenu(
